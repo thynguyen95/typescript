@@ -1,41 +1,107 @@
-let title = 'cybersoft';
+// biên dịch sang es5, es6 sẽ khác nhau
+let title = "cybersoft";
 
 {
     let title = "abc";
 }
 
-let fullName = 'Thy'
+let fullName = "Thy";
 console.log(`Họ tên: ${fullName} - ${title}`);
 
-let largeNumber = 1_000_000_000
+let largeNumber = 1_000_000_000;
 
 /* --------------------------------------------- */
 /* type
     js: khi khai báo giá trị, tự có kiểu 
+    ts: khai báo kiểu dữ liệu khi tạo biến
     + primitive type: number, string, boolean, null, undefined
     + non primitive(reference type): object, type(tự tạo)
 */
 let score: number = 1;
-let phone: string = '0802929';
+let phone: string = "0802929";
 let valid: boolean = true;
-// nhận kết quả 
-// |: union type 
-let resApi: null | string = null;
-let resApi2: undefined | string = undefined
 
-// cách khai báo arr 
+// cách khai báo arr
 let array = []; // bản chất của array là object
-console.log('array: ', typeof(array));
+console.log("array: ", typeof array);
 
-let arrScore: number[] = [1,2,3,4]
-let arrStr: string[]= ['1','2','']
-let arrDependence: Array<boolean> = [true, false, false]
+let arrScore: number[] = [1, 2, 3, 4];
+let arrStr: string[] = ["1", "2", ""];
+let arrDependence: Array<boolean> = [true, false, false];
 
-// type tự tạo  
+// tuple
+let tuple: [string, number] = ["hello", 10];
+
+// |: union type
+let resApi: null | string = null;
+let resApi2: undefined | string = undefined;
+
+// any, unknown: nhận tất cả các giá trị mang kiểu dữ liệu khác nhau
+// any: rủi ro khi kiểu dữ liệu ko xử lý được logic
+let res: any = 1;
+res++;
+console.log("res", res);
+
+let res5: unknown = 1;
+// Kiểm tra type trước khi thực hiện operation(toán tử hoặc lệnh gọi hàm)
+if (typeof res5 === "number") {
+    res5++;
+}
+
+// function type
+/*
+    kiểu dữ liệu trả về của hàm 
+    (input1, input2) : responseType => {
+        return response
+    }
+*/
+// let tinhTong = (a:number, b: number): number => {
+//     return a + b;
+// }
+
+function greet(name: string): string {
+    return `Hello, ${name}!`;
+}
+console.log(greet("Fai"));
+
+type CallBackType = (input: string) => void;
+
+let renderContent = (callback: CallBackType, content: string) => {
+    callback(content);
+    // document.querySelector('#content').innerHTML = `
+    // <h1>Chào mừng các bạn đến với cybersoft: ${content}</h1>
+    // `
+};
+
+let renderCard = (noiDung: string) => {
+    document.querySelector("#content").innerHTML = `
+    <h1>Chào mừng các bạn đến với cybersoft: ${noiDung}</h1>
+    `;
+};
+
+renderContent(renderCard, "BC77");
+
+// return Type
+let tinhTong = (a: number, b: number): number => {
+    return a + b;
+};
+
+type ResponseTypeTinhTong = ReturnType<typeof tinhTong>;
+
+const dispatchFunction = (dispatch) => {
+    return (dispatch: any): ((input: string) => number) => {
+        return (abc: string): number => {
+            return 1;
+        };
+    };
+};
+type typeFunction = ReturnType<typeof dispatchFunction>;
+
+// type tự tạo
 type ResponseApi = null | string | number;
-let res3: ResponseApi = 'string'
+let res3: ResponseApi = "string";
 
-// ES6 
+// ES6
 // class Product {
 //     id: string = '';
 //     name: string = "";
@@ -46,35 +112,99 @@ let res3: ResponseApi = 'string'
 // let prod1: Product = {id: '1', name:'iphone', price: 1000}
 // console.log('prod: ', prod);
 
-// TS 
-// type: dùng để format object và verify object có đầy đủ thuộc tính không 
-type Product =  {
+// TS
+// type: dùng để format object và verify object có đầy đủ thuộc tính không
+type Product = {
     id: string;
-    name: string ;
+    name: string;
     price: number;
-    desc?: string; //optional property: có thể null 
-}
-let prod1: Product = {id: '1', name:'iphone', price: 1000}
-let prod2: Product = {id: '1', name:'iphone', price: 1000, desc: 'lorem'}
-console.log('prod: ', prod1);
+    desc?: string; //optional property: có thể null
+};
+let prod1: Product = { id: "1", name: "iphone", price: 1000 };
+let prod2: Product = { id: "1", name: "iphone", price: 1000, desc: "lorem" };
+console.log("prod: ", prod1);
 
-// interface : dùng để format dữ liệu của object
-// không báo lỗi khi khai báo 2 interface trùng tên mà sẽ gộp 2 cái cái interface cùng tên lại thành 1 interface lớn 
+// interface : giúp định nghĩa cấu trúc của đối tượng
+// không báo lỗi khi khai báo 2 interface trùng tên mà sẽ gộp 2 cái cái interface cùng tên lại thành 1 interface lớn
 interface Student {
-    id: string | number,
-    fullName: string,
-    email: string,
-    phone: string
+    id: string | number;
+    fullName: string;
+    email: string;
+    phone: string;
 }
 
-let student1: Student = {id:1, fullName: 'abc', email:'abc@gmail.com', phone: '09676786'}
+let student1: Student = {
+    id: 1,
+    fullName: "abc",
+    email: "abc@gmail.com",
+    phone: "09676786",
+};
 
-// cần mở rộng interface 
+// cần mở rộng interface
 interface StudentEx extends Student {
-    address: string
+    address: string;
 }
 
-let student2: StudentEx = {id:1, fullName: 'abc', email:'abc@gmail.com', phone: '09676786', address: '1'}
+let student2: StudentEx = {
+    id: 1,
+    fullName: "abc",
+    email: "abc@gmail.com",
+    phone: "09676786",
+    address: "1",
+};
+
+// implements interface
+interface Control {
+    id: string;
+    className: string;
+    onclick: (e) => void;
+}
+
+class Button implements Control {
+    id: string;
+    className: string;
+    onclick: (e: any) => {
+        // xử lý click
+    };
+}
+
+// class ButtonGradient extends Button {
+
+// }
+
+class Panel implements Control {
+    id: string;
+    className: string;
+    onclick: (e: any) => {
+        // xử lý click
+    };
+}
+
+let divA: Control = {
+    id: "",
+    className: "",
+    onclick: (e: any) => {
+        // xử lý click
+    },
+};
+
+// 8. Sự Khác Nhau Giữa type và interface
+
+// ** Khi nào dùng interface?
+
+// Khi bạn cần mô tả cấu trúc của một đối tượng hoặc một class.
+
+// Khi bạn muốn tận dụng tính năng mở rộng (extends) hoặc implement (implements).
+
+// Khi cần hỗ trợ OOP với lập trình hướng interface.
+
+// ** Khi nào dùng type?
+
+// Khi cần định nghĩa một alias cho một kiểu dữ liệu phức tạp.
+
+// Khi cần sử dụng union hoặc intersection types.
+
+// Khi cần khai báo các kiểu dữ liệu nâng cao như function types.
 
 /*
     OOP: có 4 tính chất 
@@ -92,25 +222,25 @@ let student2: StudentEx = {id:1, fullName: 'abc', email:'abc@gmail.com', phone: 
 */
 
 class ProductType {
-    #img: string 
+    #img: string;
 
     renderProduct() {
-        console.log(this.#img);   
+        console.log(this.#img);
     }
 }
 
 let prod5 = new ProductType();
-// prod5.img //ko truy xuất được cho img là thuộc tính private 
+// prod5.img //ko truy xuất được cho img là thuộc tính private
 
 class NhanVien {
-    public maNhanVien: string | number = '';
-    public hoTen: string = '';
-    public email: string = '';
+    public maNhanVien: string | number = "";
+    public hoTen: string = "";
+    public email: string = "";
     private chiTieu: number = 1000;
-    protected bonus:number = 1000;
+    protected bonus: number = 1000;
 
     randomId() {
-        this.maNhanVien = Math.floor(Math.random()*1000)
+        this.maNhanVien = Math.floor(Math.random() * 1000);
     }
 
     private tinhLuongThuong() {
@@ -119,13 +249,12 @@ class NhanVien {
 
     public xuatThongTin() {
         console.log(this.tinhLuongThuong());
-        
     }
 }
 
 class KeToan extends NhanVien {
     private tinhLuongKeToan() {
-        return
+        return;
     }
 
     public xuatThongTin(): void {
@@ -135,87 +264,41 @@ class KeToan extends NhanVien {
 
 let nv: NhanVien = new NhanVien();
 nv.randomId();
-console.log('nv', nv);
+console.log("nv", nv);
 
-let kt:KeToan = new KeToan();
+let kt: KeToan = new KeToan();
 
-interface Control {
-    id: string,
-    className: string,
-    onclick: (e) => void
+// Generic trong TypeScript: giúp viết code linh hoạt hơn:
+function identity<T>(arg: T): T {
+    return arg;
+}
+console.log(identity<string>("Hello"));
+console.log(identity<number>(123));
+
+// generic với array
+function getFirstElement<T>(arr: T[]): T {
+    return arr[0];
 }
 
-class Button implements Control {
-    id: string;
-    className: string;
-    onclick: (e: any) => {
-        // xử lý click 
-    };
-}
+console.log(getFirstElement<number>([1, 2, 3])); // Output: 1
+console.log(getFirstElement<string>(["a", "b", "c"])); // Output: "a"
 
-// class ButtonGradient extends Button {
-
-// }
-
-class Panel implements Control{
-    id: string;
-    className: string;
-    onclick: (e: any) => {
-        // xử lý click 
-    };
-}
-
-let divA: Control = {
-    id: "",
-    className: "",
-    onclick: (e: any) => {
-        // xử lý click 
+// generic với class x
+class Box<T> {
+    content: T;
+    constructor(content: T) {
+        this.content = content;
+    }
+    getContent(): T {
+        return this.content;
     }
 }
 
-// function type
-/*
-    kiểu dữ liệu trả về của hàm 
-    (input1, input2) : responseType => {
-        return response
-    }
-*/
-// let tinhTong = (a:number, b: number): number => {
-//     return a + b;
-// }
+const numberBox = new Box<number>(123);
+console.log(numberBox.getContent()); // Output: 123
 
-type CallBackType = (input: string) => void;
-
-let renderContent = (callback:CallBackType, content:string) => {
-    callback(content);
-    // document.querySelector('#content').innerHTML = `
-    // <h1>Chào mừng các bạn đến với cybersoft: ${content}</h1>
-    // `
-}
-
-let renderCard = (noiDung: string) => {
-     document.querySelector('#content').innerHTML = `
-    <h1>Chào mừng các bạn đến với cybersoft: ${noiDung}</h1>
-    `
-}
-
-renderContent(renderCard, 'BC77')
-
-// return Type 
-let tinhTong = (a:number, b: number): number => {
-    return a + b;
-}
-
-type ResponseTypeTinhTong = ReturnType<typeof tinhTong>;
-
-const dispatchFunction = (dispatch) => {
-    return (dispatch : any): (input: string) => number => {
-        return (abc:string):number => {
-            return 1;
-        }
-    }
-}
-type typeFunction = ReturnType<typeof dispatchFunction>
+const stringBox = new Box<string>("Hello");
+console.log(stringBox.getContent()); // Output: "Hello"
 
 /*
     project sàn tmđt
@@ -224,10 +307,10 @@ type typeFunction = ReturnType<typeof dispatchFunction>
 */
 
 class User {
-    id: string | number = '';
-    email: string = '';
-    name: string = '';
-    password: string = '';
+    id: string | number = "";
+    email: string = "";
+    name: string = "";
+    password: string = "";
 
     create() {}
 
@@ -239,10 +322,10 @@ class User {
 }
 
 class ProductModel {
-    id: string | number = '';
-    email: string = '';
-    name: string = '';
-    password: string = '';
+    id: string | number = "";
+    email: string = "";
+    name: string = "";
+    password: string = "";
 
     create() {}
 
@@ -257,41 +340,30 @@ class ListModel<Type> {
     listModel: Type[] = [];
 
     create(newModel: Type) {
-        this.listModel.push(newModel)
+        this.listModel.push(newModel);
     }
 
     findModelByName(keyword: string): Type[] {
-        return this.listModel.filter((model:any) => model.name.search(keyword) !== -1)
+        return this.listModel.filter(
+            (model: any) => model.name.search(keyword) !== -1
+        );
     }
 }
 
-let listUser:ListModel<User> =  new ListModel<User>();
+let listUser: ListModel<User> = new ListModel<User>();
 // listUser.findModelByName()
 
-let listProduct:ListModel<ProductModel> =  new ListModel<ProductModel>();
+let listProduct: ListModel<ProductModel> = new ListModel<ProductModel>();
 // listProduct.findModelByName()
 
-// any, unknown: nhận tất cả các giá trị mang kiểu dữ liệu khác nhau 
-// any: rủi ro khi kiểu dữ liệu ko xử lý được logic 
-let res: any = 1;
-res++;
-console.log('res', res);
-
-let res5: unknown = 1;
-// Kiểm tra type trước khi thực hiện operation(toán tử hoặc lệnh gọi hàm)
-if(typeof res5 === 'number') {
-    res5++;
-}
-
 class ProductModelType {
-    id: string | number = '';
-    email: string = '';
-    name: string = '';
-    password: string = '';
+    id: string | number = "";
+    email: string = "";
+    name: string = "";
+    password: string = "";
 
     showInfo(): void {
-        console.log('info');
-        
+        console.log("info");
     }
 
     // showInfo = ():void => {
@@ -300,6 +372,6 @@ class ProductModelType {
 }
 
 let model: unknown = new ProductModelType();
-if(model instanceof ProductModelType) {
-    model.showInfo()
+if (model instanceof ProductModelType) {
+    model.showInfo();
 }
